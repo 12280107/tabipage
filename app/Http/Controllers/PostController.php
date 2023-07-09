@@ -120,7 +120,7 @@ class PostController extends Controller
     {
         $violation = new Violation;
         $violation -> post_id = $id;
-        $violation->violation = $request->violation;
+        $violation -> violation = $request->violation;
         $violation->save();
     
         return redirect()->route('posts.show',['id'=>$id]);
@@ -128,18 +128,19 @@ class PostController extends Controller
     //予約表示
     public function reserve_create($id)
     {   
-        return view('posts.reserve', ['post_id' => $id]);
+        $post = Post::find($id);
+        return view('posts.reserve', ['post' => $post]);
     }
 
     //予約登録
     public function reserve_store(Request $request, $id)
     {
         $reserve = new Reserve;
-        $reserve = Auth::id();
+        $reserve  -> user_id = Auth::user() -> id;
         $reserve-> post_id = $id;
-        $reserve->date_start = $request->input('date_start');
-        $reserve->date_fin = $request->input('date_fin');
-        $reserve->number = $request->input('number');
+        $reserve-> date_start = $request->input('date_start');
+        $reserve-> date_fin = $request->input('date_fin');
+        $reserve-> number = $request->input('number');
         $reserve->save();
     
         return redirect()->route('posts.show',['id'=>$id]);

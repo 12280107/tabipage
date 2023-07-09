@@ -4,9 +4,8 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <form method="post" action="{{ route('posts.reserve_store', ['id' => $post->id]) }}">
+            <form method="POST" action="{{ route('posts.reserve_store', ['id' => $post->id]) }}">
                 @csrf
-                @method('PATCH')
                 <div class="mb-3">
                     <label for="exampleInputTitle" class="form-label">タイトル</label>
                     <input type="text" class="form-control" id="exampleInputTitle" aria-describedby="" name="title" value="{{ $post->title }}">
