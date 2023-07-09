@@ -62,7 +62,7 @@
                     <form action="{{route('posts.destroy', $post->id)}}" method="post" class="col-md-3">
                         @csrf
                         @method('delete')
-                        <input type="submit" value="削除" class="btn btn-danger" onclick='return confirm("削除しますか？");'>
+                        <input type="submit" value="削除" class="btn btn-danger btn-block" onclick='return confirm("削除しますか？");'>
                     </form>                    
                     <a href="{{route('posts.reserve', ['id' => $post->id])}}" class="col-md-3">
                         <button type="submit" class="btn btn-success btn-block">予約</button>
