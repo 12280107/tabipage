@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    <P>ログインしました。</p>
+                    
                 </div>
             </div>
         </div>
