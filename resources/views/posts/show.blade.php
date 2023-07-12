@@ -40,20 +40,15 @@
                     <input type="text" class="form-control" id="exampleInpuAddress" name="address" value="{{ $post->address }}">
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="exampleInputImage" class="form-label">画像</label>
                             <input type="text" class="form-control" id="exampleInputImage" name="image" value="{{ $post->image }}">
                         </div>
-                        </div>
-                    <div class="col-md-6">
+                    
                         <div class="mb-3">
                             <label for="exampleInputContent" class="form-label">内容</label>
                             <textarea type="text" class="form-control" id="exampleInputContent" name="content">{{ $post->content }}</textarea>
                         </div>
-                    </div>
-                </div>
 
                 <div class="row">
                     <a href="{{route('posts.edit', ['id' => $post->id])}}" class="col-md-3">

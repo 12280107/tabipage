@@ -41,21 +41,15 @@
                     <input type="text" class="form-control" id="exampleInputaddress" aria-describedby="" name="address">
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="exampleInputImage" class="form-label">画像</label>
                             <input type="text" class="form-control" id="exampleInputImage" name="image">
                         </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="mb-3">
                             <label for="exampleInputContent" class="form-label">内容</label>
                             <textarea type="text" class="form-control" id="exampleInputContent" name="content"></textarea>
                         </div>
-                    </div>
-                </div>
-
+                 
                 <button type="submit" class="btn btn-primary">投稿する</button>
             </form>
         </div>
