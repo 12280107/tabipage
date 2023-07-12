@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">ユーザー情報</div>
+                <div class="card-header">マイページ</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -36,36 +36,19 @@
                             <input type="text" class="form-control" id="formGroupExampleInput" placeholder="{{ Auth::user()->password }}">
                         </div>
                     </div>
-                    
+                    <div class="row">
+                    <a href="{{ route('posts.create') }}" class="col-md-3">
+                    <button type="submit" class="btn btn-secondary btn-block">新規投稿</button>
+                    </a>
+                    <a href="" class="col-md-3">
+                        <button type="submit" class="btn btn-secondary btn-block">編集</button>
+                    </a>
                     <form action="" method="post" class="col-md-3">
                         @csrf
                         @method('delete')
                         <input type="submit" value="削除" class="btn btn-danger btn-block" onclick='return confirm("削除しますか？");'>
                     </form>                    
-                    <div class="container">
-                        <div class="row">
-                            @foreach ($posts as $post)
-                            <div class="col-md-4">
-                                <div class="card" style="width: 18rem;">
-                                    @if (!empty($post->image))
-                                    <img src="{{ $post->image }}" class="card-img-top" alt="...">
-                                    @else
-                                    <div style="height: 200px; background-color: #e9ecef;"></div>
-                                    @endif
-                                    <div class="card-body">
-                                        <h2><a href="{{ route('posts.show', ['id' => $post->id]) }}">{{ $post->title }}</a></h2>
-                                        <p class="card-text">宿泊可能日</p>
-                                        <p class="card-text">{{ $post->date_start }}~{{ $post->date_fin }}</p>
-                                        <p class="card-text">人数:{{ $post->number }}人</p>
-                                        <p class="card-text">金額:{{ $post->amount }}円</p>
-                                        <small>作成日:{{ $post->created_at }}</small>
-                                        <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="btn btn-primary">詳細画面</a>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

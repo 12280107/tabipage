@@ -28,13 +28,17 @@
                     <div class="row">
                         <div class="col">
                             <label for="exampleInputNumber" class="form-label">宿泊可能人数</label>
-                            <input type="text" class="form-control" id="exampleInpuNumber" name="number" value="{{ $post->number }}">
+                            <input type="text" class="form-control" id="exampleInpuNumber" name="number">
                         </div>
                         <div class="col">
                             <label for="exampleInputAmount" class="form-label">金額</label>
-                            <input type="text" class="form-control" id="exampleInpuAmount" name="amount" value="{{ $post->amount }}">
+                            <input type="text" class="form-control" id="exampleInpuAmount" name="amount">
                         </div>
                     </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputTitle" class="form-label">住所</label>
+                    <input type="text" class="form-control" id="exampleInputaddress" aria-describedby="" name="address">
                 </div>
 
                 <div class="row">

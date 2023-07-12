@@ -32,3 +32,5 @@ Route::post('/posts/{id}/violationstore', 'PostController@violation_store')->nam
 //予約機能
 Route::get('/posts/{id}/reserve','PostController@reserve_create')->name('posts.reserve');
 Route::post('/posts/{id}/reservestore', 'PostController@reserve_store')->name('posts.reserve_store');
+//ユーザー
+Route::resource('user', 'UserController')->only(['index', 'store', 'update', 'destroy']);

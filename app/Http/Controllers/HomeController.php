@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Post;
 
 class HomeController extends Controller
 {
     public function home() {
-        $user_id = Auth::id();
-        return view('user.home', compact('user_id'));
+        // 自分の記事一覧を投稿日降順で取得
+        $articles = \Auth::user()->articles()->orderBy('created_at', 'desc')->get();
+        $data = ['articles' => $articles];
+        return view('home', $data);
     }
     /**
      * Create a new controller instance.
