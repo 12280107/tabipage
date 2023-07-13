@@ -18,7 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('posts', 'PostController');
-Route::resource('users','UserController');
 //一覧表示から詳細ページへ遷移
 Route::get('/posts/{id}', 'PostController@show')->name('posts.show');
 //更新ページ
@@ -33,4 +32,4 @@ Route::post('/posts/{id}/violationstore', 'PostController@violation_store')->nam
 Route::get('/posts/{id}/reserve','PostController@reserve_create')->name('posts.reserve');
 Route::post('/posts/{id}/reservestore', 'PostController@reserve_store')->name('posts.reserve_store');
 //ユーザー
-Route::resource('user', 'UserController')->only(['index', 'store', 'update', 'destroy']);
+Route::resource('users', 'UserController')->only(['index', 'store', 'update', 'destroy', 'edit', 'show',]);

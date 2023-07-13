@@ -15,8 +15,8 @@
                         @endif
                         <div class="row">
                         <div class="card" style="width: 6rem;">
-                            @if (!empty($post->image))
-                            <img src="{{ $post->image }}" class="card-img-start" alt="...">
+                            @if (!empty($user->image))
+                            <img src="{{ $user->image }}" class="card-img-start" alt="...">
                             @else
                             <div style="height: 100px; background-color: #e9ecef;"></div>
                             @endif

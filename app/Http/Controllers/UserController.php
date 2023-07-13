@@ -68,7 +68,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
-    {
+    {   
         //
     }
 
@@ -81,7 +81,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user = Auth::user();
+        
     }
 
     /**

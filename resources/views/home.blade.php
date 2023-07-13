@@ -40,7 +40,7 @@
                     <a href="{{ route('posts.create') }}" class="col-md-3">
                     <button type="submit" class="btn btn-secondary btn-block">新規投稿</button>
                     </a>
-                    <a href="{{ route('user.edit') }}" class="col-md-3">
+                    <a href="{{ route('users.edit',[Auth::user()->id]) }}" class="col-md-3">
                         <button type="submit" class="btn btn-secondary btn-block">編集</button>
                     </a>
                     <form action="" method="post" class="col-md-3">
