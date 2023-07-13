@@ -8,6 +8,7 @@ use App\Reserve;
 class Post extends Model
 {
     public function user() {
-        return $this->belongsTo('App\User','App\Violation');
-}
+
+        return $this->belongsTo('App\User','user_id');
+    }
 }

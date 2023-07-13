@@ -47,7 +47,7 @@
                         <div class="mb-3">
                             <label for="exampleInputImage" class="form-label">画像</label>
                             <input type="text" class="form-control" id="exampleInputImage" name="image" value="{{ $post->image }}">
-                        </div>                    <div class="col-md-6">
+                        </div>                    
                         <div class="mb-3">
                             <label for="exampleInputContent" class="form-label">内容</label>
                             <textarea type="text" class="form-control" id="exampleInputContent" name="content">{{ $post->content }}</textarea>

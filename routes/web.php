@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('posts', 'PostController');
+
 //一覧表示から詳細ページへ遷移
 Route::get('/posts/{id}', 'PostController@show')->name('posts.show');
 //更新ページ

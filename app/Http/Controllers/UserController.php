@@ -28,8 +28,8 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('posts.create',compact('post'));
+    {   
+        return view('posts.create', compact('post'));
     }
 
     /**
@@ -51,14 +51,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user = User::find($user->id); //idが、リクエストされた$userのidと一致するuserを取得
-        $posts = Post::where('user_id', $user->id) //$userによる投稿を取得
-            ->orderBy('created_at', 'desc') // 投稿作成日が新しい順に並べる
-            ->paginate(10); // ページネーション; 
-        return view('users.show', [
-            'user_name' => $user->name, // $user名をviewへ渡す
-            'posts' => $posts, // $userの書いた記事をviewへ渡す
-        ]);
+        //
     }
 
     /**
@@ -69,7 +62,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {   
-        //
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -80,9 +73,13 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
-    {
-        $user = Auth::user();
-        
+    {   
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->icon = $request->input('icon');
+        $user->save();
+    
+        return redirect()->route('home', ['id' => $user->id]);
     }
 
     /**
