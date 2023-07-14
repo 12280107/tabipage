@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use APP\User;
+use App\User;
+use User\Post;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -13,7 +14,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::where('role', '<>', 3)->get();
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -23,7 +25,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.users.create');
     }
 
     /**
@@ -45,7 +47,8 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -56,7 +59,8 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
@@ -68,7 +72,8 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return redirect()->route('admin.users.show', $user->id)->with('success', 'ユーザー情報を更新しました。');
     }
 
     /**
@@ -79,6 +84,13 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return redirect()->route('admin.users.index')->with('success', 'ユーザーを削除しました。');
+    }
+
+    public function users()
+    {
+        $users =User::all();
+        return view('admin.users.index',compact('users'));
     }
 }

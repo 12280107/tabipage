@@ -30,7 +30,11 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
-        return view('home');
+    {   
+        if(Auth::user()&& Auth::user()->role==3){
+            return view('admin.home');
+        }else{
+            return view('home');
+        }
     }
 }

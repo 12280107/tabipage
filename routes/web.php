@@ -34,3 +34,7 @@ Route::get('/posts/{id}/reserve','PostController@reserve_create')->name('posts.r
 Route::post('/posts/{id}/reservestore', 'PostController@reserve_store')->name('posts.reserve_store');
 //ユーザー
 Route::resource('users', 'UserController')->only(['index', 'store', 'update', 'destroy', 'edit', 'show',]);
+
+Route::prefix('admin')->group(function () {
+    Route::resource('users', 'AdminController')->only(['index', 'store', 'update', 'destroy', 'edit', 'show',]);
+});
