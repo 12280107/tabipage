@@ -10,8 +10,8 @@ class HomeController extends Controller
 {
     public function home() {
         // 自分の記事一覧を投稿日降順で取得
-        $articles = \Auth::user()->articles()->orderBy('created_at', 'desc')->get();
-        $data = ['articles' => $articles];
+        $post = \Auth::user()->posts()->orderBy('created_at', 'desc')->get();
+        $data = ['posts' => $post];
         return view('home', $data);
     }
     /**
@@ -32,7 +32,7 @@ class HomeController extends Controller
     public function index()
     {   
         if(Auth::user()&& Auth::user()->role==3){
-            return view('admin.home');
+            return view('home');
         }else{
             return view('home');
         }

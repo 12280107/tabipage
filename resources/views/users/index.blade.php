@@ -10,7 +10,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                <th scope="col">icon</th>
+                                <th scope="col">アイコン</th>
                                 <th scope="col">ユーザー名</th>
                                 <th scope="col">メールアドレス</th>
                                 </tr>
