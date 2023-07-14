@@ -19,20 +19,20 @@
                         <div class="row">
                         <div class="card" style="width: 6rem;">
                             @if (!empty($user->icon))
-                            <img src="{{ $user->icon }}" class="card-img-start" alt="..." name="icon" value="{{ $user->icon }}">
+                            <img src="" class="card-img-start" alt="..." name="icon" value="{{ Auth::user()->icon }}">
                             @else
                             <div style="height: 100px; background-color: #e9ecef;"></div>
                             @endif
                         </div>
                         <div class="col">
                             <label for="formGroupExampleInput2" class="form-label">ユーザー名</label>
-                            <input type="text" class="form-control" placeholder="{{ Auth::user()->name }}" aria-label="name" name="name" value="{{ $user->name }}">
+                            <input type="text" class="form-control" placeholder="{{ Auth::user()->name }}" aria-label="name" name="name" value="{{ Auth::user()->name }}">
                         </div>     
                         </div>
                         
                         <div class="mb-3">
                             <label for="formGroupExampleInput2" class="form-label">メールアドレス</label>
-                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="{{ Auth::user()->email }}" value="{{ $user->email }}">
+                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="{{ Auth::user()->email }}" name="email" value="{{ Auth::user()->email }}">
                         </div>
                         <button type="submit" class="btn btn-primary">更新</button>
                     </div>
