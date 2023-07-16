@@ -8,33 +8,35 @@ use App\Models\Post;
 
 class HomeController extends Controller
 {
-    public function home() {
-        // 自分の記事一覧を投稿日降順で取得
-        $post = \Auth::user()->posts()->orderBy('created_at', 'desc')->get();
-        $data = ['posts' => $post];
-        return view('home', $data);
-    }
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+// HomeController.php
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {   
-        if(Auth::user()&& Auth::user()->role==3){
-            return view('home');
-        }else{
-            return view('home');
+public function home()
+{
+    // 自分の投稿一覧を取得
+    $posts = \Auth::user()->posts()->orderBy('created_at', 'desc')->get();
+    return view('home', compact('posts'));
+}
+
+public function index()
+{
+    if (Auth::check()) {
+        // ログイン済みの場合
+        if (Auth::user()->role == 1) {
+            // 一般ユーザーの場合
+            return redirect()->route('home');
+        } elseif (Auth::user()->role == 2) {
+            // 旅館ユーザーの場合
+            $posts = Auth::user()->posts()->orderBy('created_at', 'desc')->get();
+            return view('home', compact('posts'));
+        } elseif (Auth::user()->role == 3) {
+            // 管理者の場合
+            $users = User::where('role', '<>', 3)->get();
+            $posts = Post::all();
+            return view('admin.index', compact('users', 'posts'));
         }
     }
+
+    // ログインしていない場合はログインページへリダイレクト
+    return redirect()->route('login');
 }
+}    

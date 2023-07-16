@@ -14,51 +14,12 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
-    }
-    public function showUsers()
-    {
         $users = User::where('role', '<>', 3)->get();
-        return view('admin.users.index', compact('users'));
+        $posts = Post::all();
+        return view('admin.index', compact('users', 'posts'));
     }
-    public function showPosts()
-    {
-        $posts =Post::all();
-        return view('admin.posts.index', compact('posts'));
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    
+    // ...
 
     /**
      * Show the form for editing the specified resource.
@@ -93,5 +54,17 @@ class AdminController extends Controller
     {
         //
     }
+    public function showUsers()
+    {
+        $users = User::where('role', '<>', 3)->get();
+        return view('admin.users.index', compact('users'));
+    }
+
+    public function showPosts()
+    {
+        $posts = Post::all();
+        return view('admin.posts.index',compact('posts'));
+    }
+
 
 }

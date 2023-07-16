@@ -16,7 +16,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($users as $user)
+                                @foreach($posts as $post)
                                     <tr>
                                         <td>{{$post->icon}}</td>
                                         <td>{{$post->name}}</td>
