@@ -22,9 +22,15 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset/{token}', 'Auth\ResetPasswordController@reset');
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('posts', 'PostController');
 
+Route::get('/','PostController@index')->name('posts.index');
 // 一覧表示から詳細ページへ遷移
 Route::get('/posts/{id}', 'PostController@show')->name('posts.show');
 // 更新ページ
@@ -51,7 +57,3 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
     Route::get('/posts', [AdminController::class, 'showPosts'])->name('posts.index');
 });
 
-Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-Route::post('password/reset/{token}', 'Auth\ResetPasswordController@reset');

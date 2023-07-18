@@ -16,11 +16,64 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $posts = Post::all();
-        return view('posts.index')->with('posts', $posts);
-    }
+public function index(Request $request)
+{
+    $query = $request->input('query'); // 検索フォームからの入力値を取得
+    $date_start = $request->input('date_start'); // 日付の開始範囲を取得
+    $date_fin = $request->input('date_fin'); // 日付の終了範囲を取得
+    $amount_start = $request->input('amount_start'); // 金額の開始範囲を取得
+    $amount_fin = $request->input('amount_fin'); // 金額の終了範囲を取得
+    // dd($request->all());
+$post=Post::query();
+if($query){
+            $post->where('title', 'LIKE', "%$query%")
+                 ->orWhere('content', 'LIKE', "%$query%")
+                 ->orWhere('address', 'LIKE', "%$query%");
+}
+if($date_start){
+   $post->where('date_start','>=','$date_start');
+}
+if($date_fin){
+    $post->where('date_fin','<=','$date_fin');
+}
+
+if($amount_start){
+    $post->where('amount','>=','$amount_start');
+}
+if($amount_fin){
+    $post->where('amount','<=','$amount_fin');
+}
+
+$posts=$post->get();
+// // データベースから絞り込み検索結果を取得
+    // $posts = Post::where('title', 'LIKE', "%$query%")
+    //              ->orWhere('content', 'LIKE', "%$query%")
+    //              ->orWhere('address', 'LIKE', "%$query%")
+    //              ->when($date_start, function ($query, $date_start) {
+    //                  return $query->where('date_start', '>=', $date_start);
+    //              })
+    //              ->when($date_fin, function ($query, $date_fin) {
+    //                  return $query->where('date_fin', '<=', $date_fin);
+    //              })
+    //              ->when($amount_start, function ($query, $amount_start) {
+    //                  return $query->where('amount', '>=', $amount_start);
+    //              })
+    //              ->when($amount_fin, function ($query, $amount_fin) {
+    //                  return $query->where('amount', '<=', $amount_fin);
+    //              })
+    //              ->get();
+
+    return view('posts.index', [
+        'posts' => $posts,
+        'query'=>$query,
+        'date_start' => $date_start,
+        'date_fin' => $date_fin,
+        'amount_start' => $amount_start,
+        'amount_fin' => $amount_fin,
+    ]);
+    $posts = Post::all();
+    return view('posts.index')->with('posts', $posts);
+}
 
     /**
      * Show the form for creating a new resource.

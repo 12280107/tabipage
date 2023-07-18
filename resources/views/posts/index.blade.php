@@ -1,6 +1,26 @@
 @extends('layouts.app')
 @section('title', '投稿一覧')
 @section('content')
+<div class="search">
+        <form action="{{ route('posts.index') }}" method="GET">
+            @csrf
+
+            <div class="form-group">
+                <div>
+                <label for="query">キーワード</label>
+                <input type="text" name="query" value="">
+                </div>
+                @csrf
+            <input type="date" name="date_start" value="">
+            <span class="mx-3">~</span>
+            <input type="date" name="date_fin" value="">
+            <input type="number" name="amount_start" value="">
+            <span class="mx-3">~</span>
+            <input type="number" name="amount_fin" value="">
+            <!-- 検索ボタン -->
+            <button type="submit">検索</button></div>
+        </form>
+
 <div class="container">
     <div class="row">
         @foreach ($posts as $post)
