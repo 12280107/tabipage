@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Post;
 use App\Violation;
 use App\Reserve;
-use Illuminate\Support\Facades\Auth;
+
 
 class PostController extends Controller
 {
@@ -45,9 +47,9 @@ class PostController extends Controller
         $post->date_fin = $request->date_fin;
         $post->number = $request->number;
         $post->amount = $request->amount;
-        $post->address =$request->address;
+        $post->address = $request->address;
         //$post->image =$request->image;
-        $post->content =$request->content;
+        $post->content = $request->content;
         $post->save();
 
         return redirect('posts');
@@ -56,7 +58,7 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Post  $post
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -64,10 +66,11 @@ class PostController extends Controller
         $post = Post::find($id);
         return view('posts.show')->with('post', $post);
     }
-        /**
+
+    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Post  $post
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -75,17 +78,17 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         return view('posts.edit', ['post' => $post]);
     }
-    
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-        public function update(Request $request, Post $post)
+    public function update(Request $request, $id)
     {
+        $post = Post::findOrFail($id);
         $post->title = $request->input('title');
         $post->date_start = $request->input('date_start');
         $post->date_fin = $request->input('date_fin');
@@ -98,10 +101,11 @@ class PostController extends Controller
 
         return redirect()->route('posts.show', ['id' => $post->id]);
     }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Post  $post
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -110,39 +114,64 @@ class PostController extends Controller
         $post->delete();
         return redirect()->route('posts.index');
     }
-    //違反報告表示
+
+    /**
+     * Display the violation form for the specified post.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function violation_create($id)
-    {   
+    {
         return view('posts.violation', ['post_id' => $id]);
     }
-    //違反報告登録
+
+    /**
+     * Store the violation report for the specified post.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function violation_store(Request $request, $id)
     {
         $violation = new Violation;
-        $violation -> post_id = $id;
-        $violation -> violation = $request->violation;
+        $violation->post_id = $id;
+        $violation->violation = $request->violation;
         $violation->save();
-    
-        return redirect()->route('posts.show',['id'=>$id]);
+
+        return redirect()->route('posts.show', ['id' => $id]);
     }
-    //予約表示
+
+    /**
+     * Display the reservation form for the specified post.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function reserve_create($id)
-    {   
+    {
         $post = Post::find($id);
         return view('posts.reserve', ['post' => $post]);
     }
 
-    //予約登録
+    /**
+     * Store the reservation for the specified post.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function reserve_store(Request $request, $id)
     {
         $reserve = new Reserve;
-        $reserve  -> user_id = Auth::user() -> id;
-        $reserve-> post_id = $id;
-        $reserve-> date_start = $request->input('date_start');
-        $reserve-> date_fin = $request->input('date_fin');
-        $reserve-> number = $request->input('number');
+        $reserve->user_id = Auth::user()->id;
+        $reserve->post_id = $id;
+        $reserve->date_start = $request->input('date_start');
+        $reserve->date_fin = $request->input('date_fin');
+        $reserve->number = $request->input('number');
         $reserve->save();
-    
-        return redirect()->route('posts.show',['id'=>$id]);
+
+        return redirect()->route('posts.show', ['id' => $id]);
     }
 }

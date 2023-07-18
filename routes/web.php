@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminController;
@@ -41,37 +42,11 @@ Route::post('/posts/{id}/reservestore', 'PostController@reserve_store')->name('p
 // ユーザー
 Route::resource('users', 'UserController')->only(['index', 'store', 'update', 'destroy', 'edit', 'show']);
 
-Route::resource('admin.users', 'AdminController')->names([
-    'index' => 'admin.users.index',
-    'create' => 'admin.users.create',
-    'store' => 'admin.users.store',
-    'show' => 'admin.users.show',
-    'edit' => 'admin.users.edit',
-    'update' => 'admin.users.update',
-    'destroy' => 'admin.users.destroy',
-])->parameters([
-    'users' => 'admin_user', // パラメータ名を 'admin_user' に更新
-]);
-
-Route::get('/admin/users', 'AdminController@showUsers')->name('admin.users.index');
-
-Route::resource('admin.posts', 'AdminController')->names([
-    'index' => 'admin.posts.index',
-    'create' => 'admin.posts.create',
-    'store' => 'admin.posts.store',
-    'show' => 'admin.posts.show',
-    'edit' => 'admin.posts.edit',
-    'update' => 'admin.posts.update',
-    'destroy' => 'admin.posts.destroy',
-])->parameters([
-    'posts' => 'admin_post', // パラメータ名を 'admin_post' に変更
-]);
-
-Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(function () {
     // 管理者向けルート
-    Route::get('/', 'AdminController@index')->name('index');
+    Route::get('/', [AdminController::class, 'index'])->name('index');
     // 管理者用のユーザー一覧のルート
-    Route::get('/users', 'AdminController@showUsers')->name('users.index');
+    Route::get('/users', [AdminController::class, 'showUsers'])->name('users.index');
     // 管理者用の投稿一覧のルート
-    Route::get('/posts', 'AdminController@showPosts')->name('posts.index');
+    Route::get('/posts', [AdminController::class, 'showPosts'])->name('posts.index');
 });

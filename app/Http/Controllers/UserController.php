@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
-
+use App\Post;
+use App\User;
 class UserController extends Controller
 {
     /**
@@ -19,7 +18,6 @@ class UserController extends Controller
     {
         $users = User::where('role', '<>', 3)->get();
         return view('users.index', compact('users'));
-
     }
 
     /**
@@ -28,7 +26,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
+    {
         return view('posts.create', compact('post'));
     }
 
@@ -61,7 +59,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
-    {   
+    {
         return view('users.edit', compact('user'));
     }
 
@@ -73,12 +71,12 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
-    {   
+    {
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->icon = $request->input('icon');
         $user->save();
-    
+
         return redirect()->route('home', ['id' => $user->id]);
     }
 

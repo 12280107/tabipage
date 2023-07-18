@@ -1,12 +1,70 @@
 @extends('layouts.app')
-@section('title', '管理者ページ')
+@section('title', 'マイページ')
 @section('content')
-    <h1>管理者ページ</h1>
-        <div class="card-footer">
-            <a href="{{ route('admin.users.index', ['admin_user' => 'admin']) }}" class="btn btn-primary">ユーザー一覧</a>
-            <a href="{{ route('admin.posts.index', ['admin' => 'admin']) }}" class="btn btn-primary">投稿一覧</a>
-        </div>
-@endsection
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">マイページ</div>
+                    <div class="card-body">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        <div class="row">
+                            <div class="card" style="width: 6rem;">
+                                @if (!empty(Auth::user()->image))
+                                    <img src="{{ Auth::user()->image }}" class="card-img-start" alt="...">
+                                @else
+                                    <div style="height: 100px; background-color: #e9ecef;"></div>
+                                @endif
+                            </div>
+                            <div class="col">
+                                <label for="formGroupExampleInput2" class="form-label">ユーザー名</label>
+                                <input type="text" class="form-control" placeholder="{{ Auth::user()->name }}" aria-label="user name" readonly>
+                            </div>
+                        </div>
 
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput2" class="form-label">メールアドレス</label>
+                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="{{ Auth::user()->email }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formGroupExampleInput2" class="form-label">パスワード</label>
+                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="{{ Auth::user()->password }}" readonly>
+                        </div>
+                    </div>
+                    @auth
+                        @if (Auth::user()->role == 3)
+                            <div class="card-footer">
+                            <a href="{{ route('admin.users.index', ['admin_user' => 'admin']) }}" class="btn btn-primary">ユーザー一覧</a>
+                            <a href="{{ route('admin.posts.index', ['admin' => 'admin']) }}" class="btn btn-primary">投稿一覧</a>
+                            </div>
+                        @endif
+                    @endauth
+                    <div class="row">
+                        @auth
+                            @if (Auth::user()->role == 2)
+                                <a href="{{ route('posts.create') }}" class="col-md-3">
+                                    <button type="submit" class="btn btn-secondary btn-block">新規投稿</button>
+                                </a>
+                            @endif
+                        @endauth
+                        <a href="{{ route('users.edit',[Auth::user()->id])}}" class="col-md-3">
+                            <button type="submit" class="btn btn-secondary btn-block">編集</button>
+                        </a>
+                        <form action="" method="post" class="col-md-3">
+                            @csrf
+                            @method('delete')
+                            <input type="submit" value="削除" class="btn btn-danger btn-block" onclick='return confirm("削除しますか？");'>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
     

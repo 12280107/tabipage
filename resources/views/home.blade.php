@@ -14,32 +14,32 @@
                         @endif
                         <div class="row">
                             <div class="card" style="width: 6rem;">
-                                @if (!empty($post->image))
-                                    <img src="{{ $post->image }}" class="card-img-start" alt="...">
+                                @if (!empty(Auth::user()->image))
+                                    <img src="{{ Auth::user()->image }}" class="card-img-start" alt="...">
                                 @else
                                     <div style="height: 100px; background-color: #e9ecef;"></div>
                                 @endif
                             </div>
                             <div class="col">
                                 <label for="formGroupExampleInput2" class="form-label">ユーザー名</label>
-                                <input type="text" class="form-control" placeholder="{{ Auth::user()->name }}" aria-label="user name">
+                                <input type="text" class="form-control" placeholder="{{ Auth::user()->name }}" aria-label="user name" readonly>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="formGroupExampleInput2" class="form-label">メールアドレス</label>
-                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="{{ Auth::user()->email }}">
+                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="{{ Auth::user()->email }}" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="formGroupExampleInput2" class="form-label">パスワード</label>
-                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="{{ Auth::user()->password }}">
+                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="{{ Auth::user()->password }}" readonly>
                         </div>
                     </div>
                     @auth
                         @if (Auth::user()->role == 3)
                             <div class="card-footer">
-                                <a href="{{ route('admin.users.index') }}" class="btn btn-primary">ユーザー一覧</a>
-                                <a href="{{ route('admin.posts.index') }}" class="btn btn-primary">投稿一覧</a>
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-primary">ユーザー一覧</a>
+                            <a href="{{ route('admin.posts.index') }}" class="btn btn-primary">投稿一覧</a>
                             </div>
                         @endif
                     @endauth
