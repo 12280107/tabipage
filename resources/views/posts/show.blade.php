@@ -58,7 +58,15 @@
                         @csrf
                         @method('delete')
                         <input type="submit" value="削除" class="btn btn-danger btn-block" onclick='return confirm("削除しますか？");'>
-                    </form>                    
+                    </form>        
+                    @auth
+                        @if (Auth::user()->role == 3)
+                        <a href="{{route('posts.pdelete', ['id'=>$post->id])}}" class="col-md-3">
+                        <button class='btn btn-warning btn-block'>表示停止</button>
+                        </a>
+                        @endif
+                    @endauth
+                    
                     <a href="{{route('posts.reserve', ['id' => $post->id])}}" class="col-md-3">
                         <button type="submit" class="btn btn-success btn-block">予約</button>
                     </a>

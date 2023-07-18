@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Post;
+use App\Violation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,14 +59,32 @@ class AdminController extends Controller
     }
     public function showUsers()
     {
-        $users = User::where('role', '<>', 3)->get();
-        return view('admin.users.index', compact('users'));
+        
+        $users = User::query()
+        ->where('role', '<>', 3)
+        ->withCount([
+            'posts AS total_violation_count' => function ($query) {
+                $query->where('del_flg',1);
+            }
+        ])->orderBy('total_violation_count', 'desc')
+        ->get();
+        // dd($users);
+            return view('admin.users.index', compact('users'));
+            
     }
+    
 
     public function showPosts()
     {
-        $posts = Post::all();
+        $posts = Post::query()
+                ->where('del_flg', 0)
+                ->withCount('violation')
+                ->orderBy('violation_count', 'desc')
+                ->take(20)
+                ->get();
+    // dd($posts);
         return view('admin.posts.index',compact('posts'));
+
     }
 
 

@@ -48,12 +48,11 @@ Route::post('/posts/{id}/reservestore', 'PostController@reserve_store')->name('p
 // ユーザー
 Route::resource('users', 'UserController')->only(['index', 'store', 'update', 'destroy', 'edit', 'show']);
 
-Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(function () {
     // 管理者向けルート
-    Route::get('/', [AdminController::class, 'index'])->name('index');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     // 管理者用のユーザー一覧のルート
-    Route::get('/users', [AdminController::class, 'showUsers'])->name('users.index');
+    Route::get('/admin/users', [AdminController::class, 'showUsers'])->name('admin.users.index');
     // 管理者用の投稿一覧のルート
-    Route::get('/posts', [AdminController::class, 'showPosts'])->name('posts.index');
-});
+    Route::get('/admin/posts', [AdminController::class, 'showPosts'])->name('admin.posts.index');
 
+    Route::get('posts/pdelete/{id}','PostController@pdelete')->name('posts.pdelete');

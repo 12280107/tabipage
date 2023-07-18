@@ -38,8 +38,8 @@
                     @auth
                         @if (Auth::user()->role == 3)
                             <div class="card-footer">
-                            <a href="{{ route('admin.users.index', ['admin_user' => 'admin']) }}" class="btn btn-primary">ユーザー一覧</a>
-                            <a href="{{ route('admin.posts.index', ['admin' => 'admin']) }}" class="btn btn-primary">投稿一覧</a>
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-primary">ユーザー一覧</a>
+                            <a href="{{ route('admin.posts.index') }}" class="btn btn-primary">投稿一覧</a>
                             </div>
                         @endif
                     @endauth

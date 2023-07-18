@@ -14,11 +14,8 @@ class Post extends Model
 
         return $this->belongsTo(User::class,'user_id');
     }
-    public function searchItems($query)
-    {
-        return $this->where('title', 'LIKE', "%$query%")
-                    ->orWhere('content', 'LIKE', "%$query%")
-                    ->orWhere('address', 'LIKE', "%$query%")
-                    ->get();
+
+    public function violation(){
+        return $this->hasMany(Violation::class);
     }
 }

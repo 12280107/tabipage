@@ -54,6 +54,10 @@
                         <a href="{{ route('users.edit',[Auth::user()->id])}}" class="col-md-3">
                             <button type="submit" class="btn btn-secondary btn-block">編集</button>
                         </a>
+                        <a href="{{ route('posts.index')}}" class="col-md-3">
+                            <button type="submit" class="btn btn-secondary btn-block">投稿一覧</button>
+                        </a>
+
                         <form action="" method="post" class="col-md-3">
                             @csrf
                             @method('delete')

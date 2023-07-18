@@ -24,44 +24,28 @@ public function index(Request $request)
     $amount_start = $request->input('amount_start'); // 金額の開始範囲を取得
     $amount_fin = $request->input('amount_fin'); // 金額の終了範囲を取得
     // dd($request->all());
-$post=Post::query();
+    $post=Post::query();
 if($query){
-            $post->where('title', 'LIKE', "%$query%")
+    $post=$post->where('title', 'LIKE', "%$query%")
                  ->orWhere('content', 'LIKE', "%$query%")
                  ->orWhere('address', 'LIKE', "%$query%");
 }
 if($date_start){
-   $post->where('date_start','>=','$date_start');
+    $post=$post->whereDate('date_start','>=',$date_start);
+    // dd($post->get());
 }
 if($date_fin){
-    $post->where('date_fin','<=','$date_fin');
+    $post->whereDate('date_fin','<=',$date_fin);
 }
 
 if($amount_start){
-    $post->where('amount','>=','$amount_start');
+    $post->where('amount','>=',$amount_start);
 }
 if($amount_fin){
-    $post->where('amount','<=','$amount_fin');
+    $post->where('amount','<=',$amount_fin);
 }
 
 $posts=$post->get();
-// // データベースから絞り込み検索結果を取得
-    // $posts = Post::where('title', 'LIKE', "%$query%")
-    //              ->orWhere('content', 'LIKE', "%$query%")
-    //              ->orWhere('address', 'LIKE', "%$query%")
-    //              ->when($date_start, function ($query, $date_start) {
-    //                  return $query->where('date_start', '>=', $date_start);
-    //              })
-    //              ->when($date_fin, function ($query, $date_fin) {
-    //                  return $query->where('date_fin', '<=', $date_fin);
-    //              })
-    //              ->when($amount_start, function ($query, $amount_start) {
-    //                  return $query->where('amount', '>=', $amount_start);
-    //              })
-    //              ->when($amount_fin, function ($query, $amount_fin) {
-    //                  return $query->where('amount', '<=', $amount_fin);
-    //              })
-    //              ->get();
 
     return view('posts.index', [
         'posts' => $posts,
@@ -71,7 +55,9 @@ $posts=$post->get();
         'amount_start' => $amount_start,
         'amount_fin' => $amount_fin,
     ]);
-    $posts = Post::all();
+    $post=$post->where('del_flg',false);
+
+    $posts = $post->get();
     return view('posts.index')->with('posts', $posts);
 }
 
@@ -227,4 +213,13 @@ $posts=$post->get();
 
         return redirect()->route('posts.show', ['id' => $id]);
     }
+
+    public function pdelete($id){
+        $instance = new Post;
+        $post = $instance->find($id);
+        $post->del_flg = 1;
+        $post->save();
+        return redirect()->route('admin.posts.index')->with('post', $post);
+
+}
 }

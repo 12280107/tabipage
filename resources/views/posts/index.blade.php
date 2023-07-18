@@ -24,6 +24,7 @@
 <div class="container">
     <div class="row">
         @foreach ($posts as $post)
+        @if($post -> del_flg==0)
         <div class="col-md-4">
             <div class="card" style="width: 18rem;">
                 @if (!empty($post->image))
@@ -42,6 +43,7 @@
                 </div>
             </div>
         </div>
+        @endif
         @endforeach
     </div>
 </div>
