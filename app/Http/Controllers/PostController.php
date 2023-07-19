@@ -18,13 +18,14 @@ class PostController extends Controller
      */
 public function index(Request $request)
 {
+    
+    $count = 2;
     $query = $request->input('query'); // 検索フォームからの入力値を取得
     $date_start = $request->input('date_start'); // 日付の開始範囲を取得
     $date_fin = $request->input('date_fin'); // 日付の終了範囲を取得
     $amount_start = $request->input('amount_start'); // 金額の開始範囲を取得
     $amount_fin = $request->input('amount_fin'); // 金額の終了範囲を取得
-    // dd($request->all());
-    $post=Post::query();
+    $post=Post::where('del_flg',0);
 if($query){
     $post=$post->where('title', 'LIKE', "%$query%")
                  ->orWhere('content', 'LIKE', "%$query%")
@@ -45,7 +46,7 @@ if($amount_fin){
     $post->where('amount','<=',$amount_fin);
 }
 
-$posts=$post->get();
+$posts=$post->limit($count)->get();
 
     return view('posts.index', [
         'posts' => $posts,
@@ -55,10 +56,6 @@ $posts=$post->get();
         'amount_start' => $amount_start,
         'amount_fin' => $amount_fin,
     ]);
-    $post=$post->where('del_flg',false);
-
-    $posts = $post->get();
-    return view('posts.index')->with('posts', $posts);
 }
 
     /**
@@ -87,12 +84,12 @@ $posts=$post->get();
         $post->number = $request->number;
         $post->amount = $request->amount;
         $post->address = $request->address;
-        if ($request->hasFile('image')) {
-            $dir = 'sample';
-            $imagePath = $request->file('image')->store('public/' . $dir);
-            // 画像のURLを保存
-            $post->image = str_replace('public/', 'storage/', $imagePath);
-        }
+        if ($request->file('image')) {
+            $image=$request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('',$image,'public');
+            $post->image = $image;
+    }
+
         $post->content = $request->content;
         $post->save();
 
@@ -139,9 +136,12 @@ $posts=$post->get();
         $post->number = $request->input('number');
         $post->amount = $request->input('amount');
         $post->address = $request->input('address');
-        $dir = 'sample';
-        // sampleディレクトリに画像を保存
-        $request->image=$request->file('image')->store('public/' . $dir);
+        if ($request->file('image')) {
+            $image=$request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('',$image,'public');
+            $post->image = $image;
+    }
+
         $post->content = $request->input('content');
         $post->save();
 
@@ -228,5 +228,40 @@ $posts=$post->get();
         $post->save();
         return redirect()->route('admin.posts.index')->with('post', $post);
 
-}
+    }
+    public function more(Request $request)
+    {
+        $count = $request->count * 2;
+        $query = $request->input('query'); // 検索フォームからの入力値を取得
+        $date_start = $request->input('date_start'); // 日付の開始範囲を取得
+        $date_fin = $request->input('date_fin'); // 日付の終了範囲を取得
+        $amount_start = $request->input('amount_start'); // 金額の開始範囲を取得
+        $amount_fin = $request->input('amount_fin'); // 金額の終了範囲を取得
+            // dd($request->all());
+        $post=Post::where('del_flg',0);
+    if($query){
+        $post=$post->where('title', 'LIKE', "%$query%")
+                     ->orWhere('content', 'LIKE', "%$query%")
+                     ->orWhere('address', 'LIKE', "%$query%");
+    }
+    if($date_start){
+        $post=$post->whereDate('date_start','>=',$date_start);
+        // dd($post->get());
+    }
+    if($date_fin){
+        $post->whereDate('date_fin','<=',$date_fin);
+    }
+    
+    if($amount_start){
+        $post->where('amount','>=',$amount_start);
+    }
+    if($amount_fin){
+        $post->where('amount','<=',$amount_fin);
+    }
+    
+    $posts=$post->offset($count)->limit(2)->get();
+        $counts = $count + 2;
+
+        return array($counts, $posts);
+    }
 }

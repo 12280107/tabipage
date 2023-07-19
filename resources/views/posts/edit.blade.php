@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <form method="POST" action="{{ route('posts.update', ['id' => $post->id]) }}">
+            <form method="POST" action="{{ route('posts.update', ['id' => $post->id]) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 <div class="mb-3">
