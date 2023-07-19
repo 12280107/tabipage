@@ -56,3 +56,5 @@ Route::resource('users', 'UserController')->only(['index', 'store', 'update', 'd
     Route::get('/admin/posts', [AdminController::class, 'showPosts'])->name('admin.posts.index');
 
     Route::get('posts/pdelete/{id}','PostController@pdelete')->name('posts.pdelete');
+
+

@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', 'マイページ')
+@section('title', 'ユーザー詳細')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">マイページ</div>
+                <div class="card-header">ユーザー詳細</div>
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -29,10 +29,6 @@
                         <div class="mb-3">
                             <label for="formGroupExampleInput2" class="form-label">メールアドレス</label>
                             <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="{{ Auth::user()->email }}" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="formGroupExampleInput2" class="form-label">パスワード</label>
-                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="{{ Auth::user()->password }}" readonly>
                         </div>
                     </div>
                     @auth
@@ -58,7 +54,7 @@
                             <button type="submit" class="btn btn-secondary btn-block">投稿一覧</button>
                         </a>
 
-                        <form action="" method="post" class="col-md-3">
+                        <form action="{{ route('users.destroy', [Auth::user()->id]) }}" method="post" class="col-md-3">
                             @csrf
                             @method('delete')
                             <input type="submit" value="削除" class="btn btn-danger btn-block" onclick='return confirm("削除しますか？");'>

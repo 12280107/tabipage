@@ -8,7 +8,7 @@
         @csrf
         @method('PATCH')
             <div class="card">
-                <div class="card-header">マイページ</div>
+                <div class="card-header">ユーザー編集</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -17,13 +17,17 @@
                             </div>
                         @endif
                         <div class="row">
-                        <div class="card" style="width: 6rem;">
-                            @if (!empty($user->icon))
-                            <img src="" class="card-img-start" alt="..." name="icon" value="{{ Auth::user()->icon }}">
+                        <div class="col-md-4">
+                            @if (!empty(Auth::user()->icon))
+                                <img src="{{ Auth::user()->icon }}" class="img-thumbnail" alt="User Icon">
                             @else
-                            <div style="height: 100px; background-color: #e9ecef;"></div>
+                                <div style="height: 100px; background-color: #e9ecef;"></div>
                             @endif
-                        </div>
+                            <div class="form-group mt-3">
+                                <label for="icon">アイコン画像</label>
+                                <input type="file" class="form-control-file" id="icon" name="icon">
+                            </div>
+                        </div>                        
                         <div class="col">
                             <label for="formGroupExampleInput2" class="form-label">ユーザー名</label>
                             <input type="text" class="form-control" placeholder="{{ Auth::user()->name }}" aria-label="name" name="name" value="{{ Auth::user()->name }}">

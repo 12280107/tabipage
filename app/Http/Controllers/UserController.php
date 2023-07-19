@@ -88,6 +88,13 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->route('login')->with('status', 'ユーザーを削除しました。');
     }
+//     public function myPage()
+//     {
+//         $user = Auth::user();
+//         return view('users.mypage', compact('user'));
+//     }
 }

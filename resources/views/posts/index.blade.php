@@ -2,25 +2,48 @@
 @section('title', '投稿一覧')
 @section('content')
 <div class="search">
-        <form action="{{ route('posts.index') }}" method="GET">
-            @csrf
+    <form action="{{ route('posts.index') }}" method="GET">
+        @csrf
+        <div class="container">
 
-            <div class="form-group">
-                <div>
-                <label for="query">キーワード</label>
-                <input type="text" name="query" value="">
+        <div class="form-group">
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <label for="query">キーワード</label>
+                    <input type="text" name="query" value="">
                 </div>
-                @csrf
-            <input type="date" name="date_start" value="">
-            <span class="mx-3">~</span>
-            <input type="date" name="date_fin" value="">
-            <input type="number" name="amount_start" value="">
-            <span class="mx-3">~</span>
-            <input type="number" name="amount_fin" value="">
-            <!-- 検索ボタン -->
-            <button type="submit">検索</button></div>
-        </form>
-
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-3">
+                    <label for="date_start">開始日</label>
+                    <input type="date" name="date_start" value="">
+                </div>
+                <div class="col-md-3">
+                    <label for="date_fin">終了日</label>
+                    <input type="date" name="date_fin" value="">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row justify-content-center">
+                <div class="col-md-3">
+                    <label for="amount_start">最低金額</label>
+                    <input type="number" name="amount_start" value="">
+                </div>
+                <div class="col-md-3">
+                    <label for="amount_fin">最高金額</label>
+                    <input type="number" name="amount_fin" value="">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-1">
+                    <button type="submit">検索</button>
+                </div>
+            </div>
+        </div>
+</div>
+    </form>
+</div>        
 <div class="container">
     <div class="row">
         @foreach ($posts as $post)

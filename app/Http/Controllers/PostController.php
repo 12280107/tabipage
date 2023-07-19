@@ -87,7 +87,12 @@ $posts=$post->get();
         $post->number = $request->number;
         $post->amount = $request->amount;
         $post->address = $request->address;
-        //$post->image =$request->image;
+        if ($request->hasFile('image')) {
+            $dir = 'sample';
+            $imagePath = $request->file('image')->store('public/' . $dir);
+            // 画像のURLを保存
+            $post->image = str_replace('public/', 'storage/', $imagePath);
+        }
         $post->content = $request->content;
         $post->save();
 
@@ -134,7 +139,9 @@ $posts=$post->get();
         $post->number = $request->input('number');
         $post->amount = $request->input('amount');
         $post->address = $request->input('address');
-        //$post->image = $request->input('image');        
+        $dir = 'sample';
+        // sampleディレクトリに画像を保存
+        $request->image=$request->file('image')->store('public/' . $dir);
         $post->content = $request->input('content');
         $post->save();
 

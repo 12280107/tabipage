@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form method="post" action="{{ route('posts.store') }}">
+            <form method="post" action="{{ route('posts.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="exampleInputTitle" class="form-label">タイトル</label>
@@ -43,7 +43,8 @@
 
                         <div class="mb-3">
                             <label for="exampleInputImage" class="form-label">画像</label>
-                            <input type="text" class="form-control" id="exampleInputImage" name="image">
+                                <input type="file" name="image">
+                                <button>アップロード</button>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputContent" class="form-label">内容</label>
