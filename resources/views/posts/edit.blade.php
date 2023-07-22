@@ -9,7 +9,7 @@
                 @method('PATCH')
                 <div class="mb-3">
                     <label for="exampleInputTitle" class="form-label">タイトル</label>
-                    <input type="text" class="form-control" id="exampleInputTitle" aria-describedby="" name="title" value="{{ $post->title }}">
+                    <input type="text" class="form-control" id="exampleInputTitle" name="title" value="{{ $post->title }}">
                 </div>
                 
                 <div class="mb-3">
@@ -45,7 +45,7 @@
 
                         <div class="mb-3">
                             <label for="exampleInputImage" class="form-label">画像</label>
-                            <input type="text" class="form-control" id="exampleInputImage" name="image" value="{{ $post->image }}">
+                            <input type="file" class="form-control" id="exampleInputImage" name="image" value="{{ $post->image }}">
                         </div>                       
                         <div class="mb-3">
                             <label for="exampleInputContent" class="form-label">内容</label>

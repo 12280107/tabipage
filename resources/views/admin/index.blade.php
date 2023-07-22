@@ -13,13 +13,16 @@
                             </div>
                         @endif
                         <div class="row">
-                            <div class="card" style="width: 6rem;">
-                                @if (!empty(Auth::user()->image))
-                                    <img src="{{ Auth::user()->image }}" class="card-img-start" alt="...">
+                        <div class="card" style="width: 6rem;">
+                                @if (Auth::user()->icon)
+                                    <img src="{{ asset('storage/'.Auth::user()->icon) }}" class="card-img-start" alt="アイコン" style="height: 6rem;">
                                 @else
-                                    <div style="height: 100px; background-color: #e9ecef;"></div>
+                                    <div class="no-image" style="height: 100px; background-color: #f0f0f0;">
+                                        No Icon
+                                    </div>
                                 @endif
                             </div>
+
                             <div class="col">
                                 <label for="formGroupExampleInput2" class="form-label">ユーザー名</label>
                                 <input type="text" class="form-control" placeholder="{{ Auth::user()->name }}" aria-label="user name" readonly>
@@ -29,10 +32,6 @@
                         <div class="mb-3">
                             <label for="formGroupExampleInput2" class="form-label">メールアドレス</label>
                             <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="{{ Auth::user()->email }}" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="formGroupExampleInput2" class="form-label">パスワード</label>
-                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="{{ Auth::user()->password }}" readonly>
                         </div>
                     </div>
                     @auth
@@ -46,7 +45,7 @@
                     <div class="row">
                         @auth
                             @if (Auth::user()->role == 2)
-                                <a href="{{ route('posts.create') }}" class="col-md-3">
+                                <a href="{{ route('posts.create') }}" class="col-md-2">
                                     <button type="submit" class="btn btn-secondary btn-block">新規投稿</button>
                                 </a>
                             @endif

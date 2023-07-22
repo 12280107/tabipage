@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-        <form method="POST" action="{{ route('users.update', [Auth::user()->id]) }}">
+        <form method="POST" action="{{ route('users.update', [Auth::user()->id]) }}" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
             <div class="card">
@@ -17,15 +17,18 @@
                             </div>
                         @endif
                         <div class="row">
-                        <div class="col-md-4">
-                            @if (!empty(Auth::user()->icon))
-                                <img src="{{ Auth::user()->icon }}" class="img-thumbnail" alt="User Icon">
-                            @else
-                                <div style="height: 100px; background-color: #e9ecef;"></div>
-                            @endif
-                            <div class="form-group mt-3">
-                                <label for="icon">アイコン画像</label>
-                                <input type="file" class="form-control-file" id="icon" name="icon">
+                        <div class="card" style="width: 6rem;">
+                                @if (Auth::user()->icon)
+                                    <img src="{{ asset('storage/'.Auth::user()->icon) }}" class="card-img-start" alt="アイコン" style="height: 6rem;">
+                                @else
+                                    <div class="no-image" style="height: 100px; background-color: #f0f0f0;">
+                                        No Icon
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="form-group mt-3" style="width: 15rem;">
+                                <input type="file" class="form-control-file" name="icon">
                             </div>
                         </div>                        
                         <div class="col">

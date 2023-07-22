@@ -7,7 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Post;
 use App\Violation;
+use App\Reserve;
 use App\Notifications\ResetPassword;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -18,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'stop_flg', 'icon', 'updated_at',
+        'name', 'email', 'password', 'role', 'stop_flg', 'icon', 'updated_at', 'stop_flg',
     ];
 
     /**
@@ -46,6 +48,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+    
+    public function reservations()
+    {
+        return $this->hasMany(Reserve::class);
+    }
 
     /**
   * パスワードリセット通知の送信
@@ -57,4 +64,17 @@ class User extends Authenticatable
   {
     $this->notify(new ResetPassword($token));
   }
+  public function violations()
+    {
+        return $this->hasMany(Violation::class);
+    }
+    public function getIconUrlAttribute()
+    {
+        if ($this->icon) {
+            return asset('storage/' . $this->icon);
+        } else {
+            return asset('storage/default_icon.jpg');
+        }
+    }
+
 }

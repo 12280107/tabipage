@@ -4,13 +4,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <form method="POST" action="{{ route('posts.update', ['id' => $post->id]) }}">
+            <form method="POST" action="{{ route('posts.update', ['id' => $post->id]) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 <input type="hidden" name="_method" value="PUT">
                 <div class="mb-3">
                     <label for="exampleInputTitle" class="form-label">タイトル</label>
-                    <input type="text" class="form-control" id="exampleInputTitle" aria-describedby="" name="title" value="{{ $post->title }}">
+                    <input type="text" class="form-control" id="exampleInputTitle" name="title" value="{{ $post->title }}">
                 </div>
                 
                 <div class="mb-3">

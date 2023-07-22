@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Post;
 use App\Violation;
 use App\Reserve;
+use App\User;
 
 
 class PostController extends Controller
@@ -19,13 +20,15 @@ class PostController extends Controller
 public function index(Request $request)
 {
     
-    $count = 2;
+    $count = 3;
     $query = $request->input('query'); // 検索フォームからの入力値を取得
     $date_start = $request->input('date_start'); // 日付の開始範囲を取得
     $date_fin = $request->input('date_fin'); // 日付の終了範囲を取得
     $amount_start = $request->input('amount_start'); // 金額の開始範囲を取得
     $amount_fin = $request->input('amount_fin'); // 金額の終了範囲を取得
+
     $post=Post::where('del_flg',0);
+    
 if($query){
     $post=$post->where('title', 'LIKE', "%$query%")
                  ->orWhere('content', 'LIKE', "%$query%")
@@ -93,7 +96,7 @@ $posts=$post->limit($count)->get();
         $post->content = $request->content;
         $post->save();
 
-        return redirect('posts');
+        return redirect()->route('posts.index');    
     }
 
     /**
@@ -216,6 +219,7 @@ $posts=$post->limit($count)->get();
         $reserve->date_start = $request->input('date_start');
         $reserve->date_fin = $request->input('date_fin');
         $reserve->number = $request->input('number');
+        $reserve->role = Auth::user()->role;
         $reserve->save();
 
         return redirect()->route('posts.show', ['id' => $id]);
@@ -231,13 +235,12 @@ $posts=$post->limit($count)->get();
     }
     public function more(Request $request)
     {
-        $count = $request->count * 2;
+        $count = $request->count * 3;
         $query = $request->input('query'); // 検索フォームからの入力値を取得
         $date_start = $request->input('date_start'); // 日付の開始範囲を取得
         $date_fin = $request->input('date_fin'); // 日付の終了範囲を取得
         $amount_start = $request->input('amount_start'); // 金額の開始範囲を取得
         $amount_fin = $request->input('amount_fin'); // 金額の終了範囲を取得
-            // dd($request->all());
         $post=Post::where('del_flg',0);
     if($query){
         $post=$post->where('title', 'LIKE', "%$query%")
@@ -259,9 +262,11 @@ $posts=$post->limit($count)->get();
         $post->where('amount','<=',$amount_fin);
     }
     
-    $posts=$post->offset($count)->limit(2)->get();
-        $counts = $count + 2;
+    $posts=$post->offset($count)->limit(3)->get();
+        $counts = $count + 3;
 
         return array($counts, $posts);
     }
+
+    
 }

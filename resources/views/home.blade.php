@@ -14,10 +14,12 @@
                         @endif
                         <div class="row">
                             <div class="card" style="width: 6rem;">
-                                @if (!empty(Auth::user()->image))
-                                    <img src="{{ Auth::user()->image }}" class="card-img-start" alt="...">
+                                @if (Auth::user()->icon)
+                                    <img src="{{ asset('storage/'.Auth::user()->icon) }}" class="card-img-start" alt="アイコン" style="height: 6rem;">
                                 @else
-                                    <div style="height: 100px; background-color: #e9ecef;"></div>
+                                    <div class="no-image" style="height: 100px; background-color: #f0f0f0;">
+                                        No Icon
+                                    </div>
                                 @endif
                             </div>
                             <div class="col">
@@ -25,7 +27,6 @@
                                 <input type="text" class="form-control" placeholder="{{ Auth::user()->name }}" aria-label="user name" readonly>
                             </div>
                         </div>
-
                         <div class="mb-3">
                             <label for="formGroupExampleInput2" class="form-label">メールアドレス</label>
                             <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="{{ Auth::user()->email }}" readonly>
@@ -42,19 +43,30 @@
                     <div class="row">
                         @auth
                             @if (Auth::user()->role == 2)
-                                <a href="{{ route('posts.create') }}" class="col-md-3">
-                                    <button type="submit" class="btn btn-secondary btn-block">新規投稿</button>
+                                <a href="{{ route('posts.create') }}" class="col-md-2">
+                                    <button type="submit" class="btn btn-primary btn-block">新規投稿</button>
                                 </a>
                             @endif
                         @endauth
-                        <a href="{{ route('users.edit',[Auth::user()->id])}}" class="col-md-3">
+                        <a href="{{ route('users.edit',[Auth::user()->id])}}" class="col-md-2">
                             <button type="submit" class="btn btn-secondary btn-block">編集</button>
                         </a>
-                        <a href="{{ route('posts.index')}}" class="col-md-3">
+                        <a href="{{ route('posts.index')}}" class="col-md-2">
                             <button type="submit" class="btn btn-secondary btn-block">投稿一覧</button>
                         </a>
-
-                        <form action="{{ route('users.destroy', [Auth::user()->id]) }}" method="post" class="col-md-3">
+                        @auth
+                            @if(Auth::user()->role==1)
+                            <a href="{{ route('reservations.index') }}" class="col-md-2" >
+                            <button type="submit" class="btn btn-primary btn-block">予約一覧</button>
+                            </a>
+                            @endif
+                            @if (Auth::user()->role == 2)
+                            <a href="{{ route('users.stock') }}" class="col-md-2">
+                            <button type="submit" class="btn btn-secondary">在庫一覧</button>
+                            </a>
+                            @endif
+                        @endauth
+                        <form action="{{ route('users.destroy', [Auth::user()->id]) }}" method="post" class="col-md-2">
                             @csrf
                             @method('delete')
                             <input type="submit" value="削除" class="btn btn-danger btn-block" onclick='return confirm("削除しますか？");'>

@@ -24,8 +24,8 @@ class HomeController extends Controller
         if (Auth::check()) {
             // ログイン済みの場合
             if (Auth::user()->role == 1) {
-                // 一般ユーザーの場合
-                return redirect()->route('home');
+                $posts = Auth::user()->posts()->orderBy('created_at', 'desc')->get();
+                return view('home', compact('posts'));
             } elseif (Auth::user()->role == 2) {
                 // 旅館ユーザーの場合
                 $posts = Auth::user()->posts()->orderBy('created_at', 'desc')->get();
@@ -37,8 +37,8 @@ class HomeController extends Controller
                 return view('admin.index', compact('users', 'posts'));
             }
         }
-
-        // ログインしていない場合はログインページへリダイレクト
-        return redirect()->route('login');
+        if (!Auth::check()) {
+            return redirect()->route('posts.index');
     }
+}
 }

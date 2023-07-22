@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Post;
 use App\User;
+use App\Reserve;
+
 class UserController extends Controller
 {
     /**
@@ -27,6 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $post = new Post();
         return view('posts.create', compact('post'));
     }
 
@@ -47,9 +50,17 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+    
+        // roleが1かつログインユーザーが表示中のユーザーの場合のみ、予約した投稿一覧を取得
+        if (Auth::check() && Auth::user()->role == 1 && Auth::user()->id == $user->id) {
+            $reserves = $user->reserves;
+            return view('users.show', ['user' => $user, 'reserves' => $reserves]);
+        }
+    
+        return view('home', ['user' => $user]);
     }
 
     /**
@@ -74,10 +85,14 @@ class UserController extends Controller
     {
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-        $user->icon = $request->input('icon');
+        if ($request->file('image')) {
+            $image=$request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('',$image,'public');
+            $user->image = $image;
+    }
         $user->save();
 
-        return redirect()->route('home', ['id' => $user->id]);
+        return redirect()->route('home');
     }
 
     /**
@@ -86,15 +101,24 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
         return redirect()->route('login')->with('status', 'ユーザーを削除しました。');
     }
-//     public function myPage()
-//     {
-//         $user = Auth::user();
-//         return view('users.mypage', compact('user'));
-//     }
+    public function reservations()
+    {
+        $user = Auth::user();
+        $reservations = $user->reservations()->with('post')->get();
+        return view('users.reservations', compact('reservations'));
+    }
+    public function stock()
+    {
+        $user_id = Auth::id();
+        $posts = Post::where('user_id',$user_id)->get();
+        
+        return view('users.stock', compact('posts'));
+    }
+
 }

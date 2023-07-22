@@ -7,6 +7,7 @@ use App\Post;
 use App\Violation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
@@ -68,9 +69,21 @@ class AdminController extends Controller
             }
         ])->orderBy('total_violation_count', 'desc')
         ->get();
-        // dd($users);
-            return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('users'));
             
+    }
+    public function stopUserFunction(Request $request)
+    {
+        $userIds = $request->input('stop_flg', []);
+    
+        foreach ($userIds as $userId) {
+            $user = User::find($userId);
+            if ($user && $user->role !== 3) {
+                $user->update(['stop_flg' => 1]);
+            }
+        }
+    
+        return redirect()->back()->with('success', '選択したユーザーの機能を停止しました。');
     }
     
 
@@ -82,7 +95,8 @@ class AdminController extends Controller
                 ->orderBy('violation_count', 'desc')
                 ->take(20)
                 ->get();
-    // dd($posts);
+
+        $posts = Post::with('user')->get();
         return view('admin.posts.index',compact('posts'));
 
     }

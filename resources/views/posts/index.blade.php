@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-        @endforeach
+    @endforeach
 </div>
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -127,7 +127,7 @@ $(function(){
 
           // コンテンツ追加
           $("#content").append(add_content);
-          $("#count").val(data[1]);
+          $("#count").val(count);
       }).fail(function(e){
           console.log(e);
       })
