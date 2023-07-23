@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'stop_flg', 'icon', 'updated_at', 'stop_flg',
+        'name', 'email', 'password', 'role', 'stop_flg', 'icon', 'updated_at', 'stop_flg' , 'id',
     ];
 
     /**
@@ -76,5 +76,17 @@ class User extends Authenticatable
             return asset('storage/default_icon.jpg');
         }
     }
+    protected static function boot()
+    {
+        parent::boot();
+
+        // ユーザーの stop_flg 変更時に関連する投稿の del_flg を更新
+        static::updating(function ($user) {
+            if ($user->isDirty('stop_flg') && $user->stop_flg === 1) {
+                $user->posts()->update(['del_flg' => 1]);
+            }
+        });
+    }
+
 
 }

@@ -107,12 +107,6 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('login')->with('status', 'ユーザーを削除しました。');
     }
-    public function reservations()
-    {
-        $user = Auth::user();
-        $reservations = $user->reservations()->with('post')->get();
-        return view('users.reservations', compact('reservations'));
-    }
     public function stock()
     {
         $user_id = Auth::id();
@@ -120,5 +114,13 @@ class UserController extends Controller
         
         return view('users.stock', compact('posts'));
     }
-
+    public function reservations()
+    {
+        $user = Auth::user();
+        $reservations = $user->reservations()->with('post')->whereHas('post', function ($query) {
+            $query->where('del_flg', 0);
+        })->get();
+        return view('users.reservations', compact('reservations'));
+    }
+    
 }

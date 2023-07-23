@@ -233,6 +233,24 @@ $posts=$post->limit($count)->get();
         return redirect()->route('admin.posts.index')->with('post', $post);
 
     }
+    public function updateDelFlag(Request $request, $id)
+    {
+        $post = Post::findOrFail($id);
+
+        // 投稿のdel_flgが0から1に変更された場合
+        if ($post->del_flg == 0 && $request->input('del_flg') == 1) {
+            // 関連する予約のdel_flgも1に更新
+            DB::transaction(function () use ($post) {
+                $post->update(['del_flg' => 1]);
+                $post->reservations()->update(['del_flg' => 1]);
+            });
+        } else {
+            // del_flgが1から0に変更された場合やdel_flgが変更されていない場合
+            $post->update(['del_flg' => $request->input('del_flg', 0)]);
+        }
+
+        return redirect()->route('posts.show', ['id' => $id]);
+    }
     public function more(Request $request)
     {
         $count = $request->count * 3;
@@ -267,6 +285,5 @@ $posts=$post->limit($count)->get();
 
         return array($counts, $posts);
     }
-
     
 }

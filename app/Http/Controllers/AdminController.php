@@ -17,9 +17,15 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+        // stop_flgが0のユーザーのIDを取得
+        $activeUserIds = User::where('stop_flg', 0)->pluck('id');
+
+        // stop_flgが0のユーザーが作成した投稿を一覧に表示する
+        $posts = Post::whereIn('user_id', $activeUserIds)->get();
+
+
         $users = User::where('role', '<>', 3)->get();
-        $posts = Post::all();
         return view('admin.index', compact('users', 'posts'));
     }
     
@@ -85,21 +91,16 @@ class AdminController extends Controller
     
         return redirect()->back()->with('success', '選択したユーザーの機能を停止しました。');
     }
-    
-
-    public function showPosts()
+        public function showPosts()
     {
         $posts = Post::query()
-                ->where('del_flg', 0)
-                ->withCount('violation')
-                ->orderBy('violation_count', 'desc')
-                ->take(20)
-                ->get();
+                    ->where('del_flg', 0)
+                    ->withCount('violation')
+                    ->orderBy('violation_count', 'desc')
+                    ->take(20)
+                    ->get();
 
-        $posts = Post::with('user')->get();
-        return view('admin.posts.index',compact('posts'));
-
+        return view('admin.posts.index', compact('posts'));
     }
-
 
 }
